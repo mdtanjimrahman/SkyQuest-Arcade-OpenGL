@@ -952,44 +952,53 @@ void level1Display()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void darkclouds(float cx, float cy, float r, int num_segments)
+void drawCrescentMoon()
 {
+
+    int i;
+    GLfloat radius = 0.1f;  // Outer moon radius
+    GLfloat innerRadius = 0.08f;  // Inner cutout radius
+    int triangleAmount = 360;  // Smoothness of the circle
+    GLfloat twicePi = 2.0f * PI;
+
+    // Outer white circle (main moon)
+    glColor3f(1.0f, 1.0f, 1.0f);  // White color
     glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(cx, cy);
-    for (int i = 0; i <= num_segments; i++)
+    glVertex2f(-0.75f, 0.75f);  // Center of the moon
+    for (i = 0; i <= triangleAmount; i++)
     {
-        float theta = 2.0f * PI * float(i) / float(num_segments);
-        float x = r * cosf(theta);
-        float y = r * sinf(theta);
-        glVertex2f(x + cx, y + cy);
+        glVertex2f(
+            -0.75f + (radius * cos(i * twicePi / triangleAmount)),
+            0.75f + (radius * sin(i * twicePi / triangleAmount))
+        );
     }
     glEnd();
-}
+
+    // Inner background-colored circle to create the crescent effect
+    glColor3f(0.0f, 0.0f, 0.2f);  // Same as background color for blending
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(-0.72f, 0.78f);  // Slight offset to create the curve
+    for (i = 0; i <= triangleAmount; i++)
+    {
+        glVertex2f(
+            -0.72f + (innerRadius * cos(i * twicePi / triangleAmount)),
+            0.78f + (innerRadius * sin(i * twicePi / triangleAmount))
+        );
+    }
+    glEnd();
+
+    }
+
+
+
+
 
 
 
 
 void obstacles(GLfloat x, GLfloat y)
 {
+
     int i;
 
     GLfloat radius = 0.065f; // Radius of the circle
@@ -1027,42 +1036,58 @@ void level2Display()
     glVertex2f (1.0f, -1.0f);
     glEnd();
 
-    glColor3ub(230, 245, 255);
-    darkclouds(-0.8f, 0.6f, 0.02f, 20); //snowflake
-    darkclouds(-0.4f, 0.7f, 0.02f, 20);
-    darkclouds(0.3f, 0.5f, 0.02f, 20);
-    darkclouds(0.6f, 0.8f, 0.02f, 20);
-    darkclouds(-0.1f, 0.9f, 0.02f, 20);
-    glEnd();     // moon
 
-    circle();
-
-    glColor3ub(255, 236, 179); // yellow
-    darkclouds(0.7f, 0.7f, 0.15f, 100);
-    glColor4f(1.0f, 0.925f, 0.702f, 0.2f); // light yellow
-    darkclouds(0.7f, 0.7f, 0.18f, 100);
+    //Mountain
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.3f, 0.3f, 0.5f);
+    glVertex2f(-0.8f, -1.0f);
+    glVertex2f(-0.1f, 0.0f);
+    glVertex2f(0.7f, -1.0f);
+    glEnd();
 
 
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.5f, 0.5f, 0.7f);
+    glVertex2f(-1.0f, -1.0f);
+    glVertex2f(-0.4f, -0.1f);
+    glVertex2f(0.3f, -1.0f);
+    glEnd();
 
 
-    //  clouds
-    glColor3ub(80, 80, 80); // Gray color
-    darkclouds(-0.9f, -0.15f, 0.08f, 100);
-    darkclouds(-0.8f, -0.1f, 0.12f, 100);
-    darkclouds(-0.7f, -0.15f, 0.08f, 100);
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.6f, 0.6f, 0.8f);
+    glVertex2f(-1.15f, -1.0f);
+    glVertex2f(-0.7f, 0.05f);
+    glVertex2f(0.0f, -1.0f);
+    glEnd();
 
-    darkclouds(0.1f, 0.3f, 0.1f, 100);
-    darkclouds(0.2f, 0.35f, 0.12f, 100);
-    darkclouds(0.3f, 0.3f, 0.1f, 100);
 
-    darkclouds(-0.3f, 0.8f, 0.1f, 100);
-    darkclouds(-0.2f, 0.85f, 0.12f, 100);
-    darkclouds(-0.1f, 0.8f, 0.1f, 100);
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.2f, 0.2f, 0.4f);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.3f, -0.15f);
+    glVertex2f(0.9f, -1.0f);
+    glEnd();
 
-    darkclouds(0.9f, -0.25f, 0.08f, 100);
-    darkclouds(0.8f, -0.2f, 0.12f, 100);
-    darkclouds(0.7f, -0.25f, 0.08f, 100);
 
+
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.15f, 0.15f, 0.3f);
+    glVertex2f(0.3f, -1.0f);
+    glVertex2f(0.8f, -0.3f);
+    glVertex2f(1.5f, -1.0f);
+    glEnd();
+
+
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.1f, 0.1f, 0.2f);
+    glVertex2f(0.02f, -1.0f);
+    glVertex2f(0.4f, -0.6f);
+    glVertex2f(0.8f, -1.0f);
+    glEnd();
+
+
+    drawCrescentMoon();
 
     //collectibles
     item(0.75, 0.75);
